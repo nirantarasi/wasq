@@ -7,7 +7,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/gdamore/tcell/v2 v2.5.1
 	github.com/google/go-cmp v0.7.0
-	github.com/mattn/go-runewidth v0.0.16
+	github.com/mattn/go-runewidth v0.0.31
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nirantarasi/wasq v0.25.0
 	github.com/nirantarasi/wasq/x v0.0.0-20220131170841-349f4c50fb1d
@@ -22,6 +22,7 @@ require (
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/clipperhouse/uax29/v2 v2.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -37,7 +38,6 @@ require (
 	github.com/prometheus/client_model v0.6.3 // indirect
 	github.com/prometheus/common v0.72.0 // indirect
 	github.com/prometheus/procfs v0.22.0 // indirect
-	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/spf13/afero v1.1.2 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
