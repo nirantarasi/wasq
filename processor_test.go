@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"context"
@@ -16,12 +16,12 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/errors"
-	"github.com/hibiken/asynq/internal/log"
-	"github.com/hibiken/asynq/internal/rdb"
-	h "github.com/hibiken/asynq/internal/testutil"
-	"github.com/hibiken/asynq/internal/timeutil"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/errors"
+	"github.com/nirantarasi/wasq/internal/log"
+	"github.com/nirantarasi/wasq/internal/rdb"
+	h "github.com/nirantarasi/wasq/internal/testutil"
+	"github.com/nirantarasi/wasq/internal/timeutil"
 )
 
 var taskCmpOpts = []cmp.Option{
@@ -225,13 +225,13 @@ func TestProcessorSuccessWithMultipleQueues(t *testing.T) {
 	}
 }
 
-// https://github.com/hibiken/asynq/issues/166
+// https://github.com/nirantarasi/wasq/issues/166
 func TestProcessTasksWithLargeNumberInPayload(t *testing.T) {
 	r := setup(t)
 	defer r.Close()
 	rdbClient := rdb.NewRDB(r)
 
-	m1 := h.NewTaskMessage("large_number", h.JSON(map[string]interface{}{"data": 111111111111111111}))
+	m1 := h.NewTaskMessage("large_number", h.JSON(map[string]any{"data": 111111111111111111}))
 	t1 := NewTask(m1.Type, m1.Payload)
 
 	tests := []struct {
@@ -769,7 +769,7 @@ func TestProcessorPerform(t *testing.T) {
 			handler: func(ctx context.Context, t *Task) error {
 				return nil
 			},
-			task:    NewTask("gen_thumbnail", h.JSON(map[string]interface{}{"src": "some/img/path"})),
+			task:    NewTask("gen_thumbnail", h.JSON(map[string]any{"src": "some/img/path"})),
 			wantErr: false,
 		},
 		{
@@ -777,7 +777,7 @@ func TestProcessorPerform(t *testing.T) {
 			handler: func(ctx context.Context, t *Task) error {
 				return fmt.Errorf("something went wrong")
 			},
-			task:    NewTask("gen_thumbnail", h.JSON(map[string]interface{}{"src": "some/img/path"})),
+			task:    NewTask("gen_thumbnail", h.JSON(map[string]any{"src": "some/img/path"})),
 			wantErr: true,
 		},
 		{
@@ -785,7 +785,7 @@ func TestProcessorPerform(t *testing.T) {
 			handler: func(ctx context.Context, t *Task) error {
 				panic("something went terribly wrong")
 			},
-			task:    NewTask("gen_thumbnail", h.JSON(map[string]interface{}{"src": "some/img/path"})),
+			task:    NewTask("gen_thumbnail", h.JSON(map[string]any{"src": "some/img/path"})),
 			wantErr: true,
 		},
 	}
@@ -955,7 +955,7 @@ func TestProcessorComputeDeadline(t *testing.T) {
 
 func TestReturnPanicError(t *testing.T) {
 
-	task := NewTask("gen_thumbnail", h.JSON(map[string]interface{}{"src": "some/img/path"}))
+	task := NewTask("gen_thumbnail", h.JSON(map[string]any{"src": "some/img/path"}))
 
 	tests := []struct {
 		name         string

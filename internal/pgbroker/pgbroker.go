@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/errors"
-	"github.com/hibiken/asynq/internal/timeutil"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/errors"
+	"github.com/nirantarasi/wasq/internal/timeutil"
 )
 
 const leaseDuration = 30 * time.Second

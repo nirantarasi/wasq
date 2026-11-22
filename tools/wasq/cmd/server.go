@@ -24,14 +24,14 @@ var serverCmd = &cobra.Command{
 	Use:   "server <command> [flags]",
 	Short: "Manage servers",
 	Example: heredoc.Doc(`
-		$ asynq server list`),
+		$ wasq server list`),
 }
 
 var serverListCmd = &cobra.Command{
 	Use:     "list",
 	Aliases: []string{"ls"},
 	Short:   "List servers",
-	Long: `Server list (asynq server ls) shows all running worker servers
+	Long: `Server list (wasq server ls) shows all running worker servers
 pulling tasks from the given redis instance.
 
 The command shows the following for each server:

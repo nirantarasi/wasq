@@ -2,12 +2,12 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"database/sql"
 
-	"github.com/hibiken/asynq/internal/pgbroker"
+	"github.com/nirantarasi/wasq/internal/pgbroker"
 )
 
 // NewClientFromDB returns a new Client backed by PostgreSQL.

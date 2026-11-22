@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"context"
@@ -16,11 +16,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hibiken/asynq/internal/base"
-	asynqcontext "github.com/hibiken/asynq/internal/context"
-	"github.com/hibiken/asynq/internal/errors"
-	"github.com/hibiken/asynq/internal/log"
-	"github.com/hibiken/asynq/internal/timeutil"
+	"github.com/nirantarasi/wasq/internal/base"
+	wasqcontext "github.com/nirantarasi/wasq/internal/context"
+	"github.com/nirantarasi/wasq/internal/errors"
+	"github.com/nirantarasi/wasq/internal/log"
+	"github.com/nirantarasi/wasq/internal/timeutil"
 	"golang.org/x/time/rate"
 )
 
@@ -150,9 +150,7 @@ func (p *processor) shutdown() {
 }
 
 func (p *processor) start(wg *sync.WaitGroup) {
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		for {
 			select {
 			case <-p.done:
@@ -162,7 +160,7 @@ func (p *processor) start(wg *sync.WaitGroup) {
 				p.exec()
 			}
 		}
-	}()
+	})
 }
 
 // exec pulls a task out of the queue and starts a worker goroutine to
@@ -202,7 +200,7 @@ func (p *processor) exec() {
 				<-p.sema // release token
 			}()
 
-			ctx, cancel := asynqcontext.New(p.baseCtxFn(), msg, deadline)
+			ctx, cancel := wasqcontext.New(p.baseCtxFn(), msg, deadline)
 			p.cancelations.Add(msg.ID, cancel)
 			defer func() {
 				cancel()
@@ -410,7 +408,7 @@ func (p *processor) queues() []string {
 	}
 	var names []string
 	for qname, priority := range p.queueConfig {
-		for i := 0; i < priority; i++ {
+		for range priority {
 			names = append(names, qname)
 		}
 	}
@@ -511,7 +509,7 @@ func gcd(xs ...int) int {
 		return x
 	}
 	res := xs[0]
-	for i := 0; i < len(xs); i++ {
+	for i := range xs {
 		res = fn(xs[i], res)
 		if res == 1 {
 			return 1

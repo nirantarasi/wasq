@@ -2,15 +2,15 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/hibiken/asynq/internal/rdb"
-	"github.com/hibiken/asynq/internal/testbroker"
+	"github.com/nirantarasi/wasq/internal/rdb"
+	"github.com/nirantarasi/wasq/internal/testbroker"
 )
 
 func TestHealthChecker(t *testing.T) {

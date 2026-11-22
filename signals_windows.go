@@ -1,6 +1,6 @@
 //go:build windows
 
-package asynq
+package wasq
 
 import (
 	"os"

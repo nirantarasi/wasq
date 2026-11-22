@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"os"
@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/log"
-	"github.com/hibiken/asynq/internal/timeutil"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/log"
+	"github.com/nirantarasi/wasq/internal/timeutil"
 )
 
 // heartbeater is responsible for writing process info to redis periodically to
@@ -108,9 +108,7 @@ type workerInfo struct {
 }
 
 func (h *heartbeater) start(wg *sync.WaitGroup) {
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 
 		h.started = h.clock.Now()
 
@@ -138,7 +136,7 @@ func (h *heartbeater) start(wg *sync.WaitGroup) {
 				delete(h.workers, msg.ID)
 			}
 		}
-	}()
+	})
 }
 
 // beat extends lease for workers and writes server/worker info to redis.

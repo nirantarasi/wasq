@@ -10,8 +10,8 @@ import (
 
 	"github.com/MakeNowJust/heredoc/v2"
 	"github.com/fatih/color"
-	"github.com/hibiken/asynq"
-	"github.com/hibiken/asynq/internal/errors"
+	"github.com/nirantarasi/wasq"
+	"github.com/nirantarasi/wasq/internal/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -34,9 +34,9 @@ var queueCmd = &cobra.Command{
 	Use:   "queue <command> [flags]",
 	Short: "Manage queues",
 	Example: heredoc.Doc(`
-	  $ asynq queue ls
-	  $ asynq queue inspect myqueue
-	  $ asynq queue pause myqueue`),
+	  $ wasq queue ls
+	  $ wasq queue inspect myqueue
+	  $ wasq queue pause myqueue`),
 }
 
 var queueListCmd = &cobra.Command{
@@ -52,8 +52,8 @@ var queueInspectCmd = &cobra.Command{
 	Args: cobra.MinimumNArgs(1),
 	RunE: queueInspect,
 	Example: heredoc.Doc(`
-		$ asynq queue inspect myqueue
-		$ asynq queue inspect queue1 queue2 queue3`),
+		$ wasq queue inspect myqueue
+		$ wasq queue inspect queue1 queue2 queue3`),
 }
 
 var queueHistoryCmd = &cobra.Command{
@@ -62,9 +62,9 @@ var queueHistoryCmd = &cobra.Command{
 	Args: cobra.MinimumNArgs(1),
 	RunE: queueHistory,
 	Example: heredoc.Doc(`
-		$ asynq queue history myqueue
-		$ asynq queue history queue1 queue2 queue3
-		$ asynq queue history myqueue --days=90`),
+		$ wasq queue history myqueue
+		$ wasq queue history queue1 queue2 queue3
+		$ wasq queue history myqueue --days=90`),
 }
 
 var queuePauseCmd = &cobra.Command{
@@ -73,8 +73,8 @@ var queuePauseCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	RunE:  queuePause,
 	Example: heredoc.Doc(`
-		$ asynq queue pause myqueue
-		$ asynq queue pause queue1 queue2 queue3`),
+		$ wasq queue pause myqueue
+		$ wasq queue pause queue1 queue2 queue3`),
 }
 
 var queueUnpauseCmd = &cobra.Command{
@@ -84,8 +84,8 @@ var queueUnpauseCmd = &cobra.Command{
 	Aliases: []string{"unpause"},
 	RunE:    queueUnpause,
 	Example: heredoc.Doc(`
-		$ asynq queue resume myqueue
-		$ asynq queue resume queue1 queue2 queue3`),
+		$ wasq queue resume myqueue
+		$ wasq queue resume queue1 queue2 queue3`),
 }
 
 var queueRemoveCmd = &cobra.Command{
@@ -95,16 +95,16 @@ var queueRemoveCmd = &cobra.Command{
 	Args:    cobra.MinimumNArgs(1),
 	RunE:    queueRemove,
 	Example: heredoc.Doc(`
-		$ asynq queue rm myqueue
-		$ asynq queue rm queue1 queue2 queue3
-		$ asynq queue rm myqueue --force`),
+		$ wasq queue rm myqueue
+		$ wasq queue rm queue1 queue2 queue3
+		$ wasq queue rm myqueue --force`),
 }
 
 func queueList(cmd *cobra.Command, args []string) error {
 	type queueInfo struct {
 		name    string
 		keyslot int64
-		nodes   []*asynq.ClusterNode
+		nodes   []*wasq.ClusterNode
 	}
 	inspector := createInspector()
 	queues, err := inspector.Queues()
@@ -163,7 +163,7 @@ func queueInspect(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func printQueueInfo(info *asynq.QueueInfo) {
+func printQueueInfo(info *wasq.QueueInfo) {
 	bold := color.New(color.Bold)
 	bold.Println("Queue Info")
 	fmt.Printf("Name:   %s\n", info.Queue)
@@ -214,7 +214,7 @@ func queueHistory(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func printDailyStats(stats []*asynq.DailyStats) {
+func printDailyStats(stats []*wasq.DailyStats) {
 	printTable(
 		[]string{"date (UTC)", "processed", "failed", "error rate"},
 		func(w io.Writer, tmpl string) {
@@ -278,7 +278,7 @@ func queueRemove(cmd *cobra.Command, args []string) error {
 		err = r.RemoveQueue(qname, force)
 		if err != nil {
 			if errors.IsQueueNotEmpty(err) {
-				fmt.Printf("error: %v\nIf you are sure you want to delete it, run 'asynq queue rm --force %s'\n", err, qname)
+				fmt.Printf("error: %v\nIf you are sure you want to delete it, run 'wasq queue rm --force %s'\n", err, qname)
 			} else {
 				fmt.Printf("error: %v\n", err)
 			}

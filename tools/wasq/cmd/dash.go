@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/MakeNowJust/heredoc/v2"
-	"github.com/hibiken/asynq/tools/asynq/cmd/dash"
+	"github.com/nirantarasi/wasq/tools/wasq/cmd/dash"
 	"github.com/spf13/cobra"
 )
 
@@ -29,8 +29,8 @@ var dashCmd = &cobra.Command{
 		Display interactive dashboard.`),
 	Args: cobra.NoArgs,
 	Example: heredoc.Doc(`
-        $ asynq dash
-        $ asynq dash --refresh=3s`),
+        $ wasq dash
+        $ wasq dash --refresh=3s`),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if flagPollInterval < 1*time.Second {
 			return fmt.Errorf("--refresh cannot be less than 1s")

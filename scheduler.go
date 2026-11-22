@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"fmt"
@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/log"
-	"github.com/hibiken/asynq/internal/rdb"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/log"
+	"github.com/nirantarasi/wasq/internal/rdb"
 	"github.com/redis/go-redis/v9"
 	"github.com/robfig/cron/v3"
 )

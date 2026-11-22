@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hibiken/asynq"
-	"github.com/hibiken/asynq/x/rate"
+	"github.com/nirantarasi/wasq"
+	"github.com/nirantarasi/wasq/x/rate"
 )
 
 type RateLimitError struct {
@@ -18,11 +18,11 @@ func (e *RateLimitError) Error() string {
 }
 
 func ExampleNewSemaphore() {
-	redisConnOpt := asynq.RedisClientOpt{Addr: ":6379"}
+	redisConnOpt := wasq.RedisClientOpt{Addr: ":6379"}
 	sema := rate.NewSemaphore(redisConnOpt, "my_queue", 10)
 	// call sema.Close() when appropriate
 
-	_ = asynq.HandlerFunc(func(ctx context.Context, task *asynq.Task) error {
+	_ = wasq.HandlerFunc(func(ctx context.Context, task *wasq.Task) error {
 		ok, err := sema.Acquire(ctx)
 		if err != nil {
 			return err

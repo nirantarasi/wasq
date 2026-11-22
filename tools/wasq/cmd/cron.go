@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/MakeNowJust/heredoc/v2"
-	"github.com/hibiken/asynq"
+	"github.com/nirantarasi/wasq"
 	"github.com/spf13/cobra"
 )
 
@@ -27,8 +27,8 @@ var cronCmd = &cobra.Command{
 	Use:   "cron <command> [flags]",
 	Short: "Manage cron",
 	Example: heredoc.Doc(`
-		$ asynq cron ls
-		$ asynq cron history 7837f142-6337-4217-9276-8f27281b67d1`),
+		$ wasq cron ls
+		$ wasq cron history 7837f142-6337-4217-9276-8f27281b67d1`),
 }
 
 var cronListCmd = &cobra.Command{
@@ -44,10 +44,10 @@ var cronHistoryCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	RunE:  cronHistory,
 	Example: heredoc.Doc(`
-		$ asynq cron history 7837f142-6337-4217-9276-8f27281b67d1
-		$ asynq cron history 7837f142-6337-4217-9276-8f27281b67d1 bf6a8594-cd03-4968-b36a-8572c5e160dd
-		$ asynq cron history 7837f142-6337-4217-9276-8f27281b67d1 --size=100
-		$ asynq cron history 7837f142-6337-4217-9276-8f27281b67d1 --page=2`),
+		$ wasq cron history 7837f142-6337-4217-9276-8f27281b67d1
+		$ wasq cron history 7837f142-6337-4217-9276-8f27281b67d1 bf6a8594-cd03-4968-b36a-8572c5e160dd
+		$ wasq cron history 7837f142-6337-4217-9276-8f27281b67d1 --size=100
+		$ wasq cron history 7837f142-6337-4217-9276-8f27281b67d1 --page=2`),
 }
 
 func cronList(cmd *cobra.Command, args []string) error {
@@ -115,7 +115,7 @@ func cronHistory(cmd *cobra.Command, args []string) error {
 		fmt.Printf("Entry: %s\n\n", entryID)
 
 		events, err := inspector.ListSchedulerEnqueueEvents(
-			entryID, asynq.PageSize(pageSize), asynq.Page(pageNum))
+			entryID, wasq.PageSize(pageSize), wasq.Page(pageNum))
 		if err != nil {
 			fmt.Printf("error: %v\n", err)
 			continue

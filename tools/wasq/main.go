@@ -4,7 +4,7 @@
 
 package main
 
-import "github.com/hibiken/asynq/tools/asynq/cmd"
+import "github.com/nirantarasi/wasq/tools/wasq/cmd"
 
 func main() {
 	cmd.Execute()

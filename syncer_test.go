@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/rdb"
-	h "github.com/hibiken/asynq/internal/testutil"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/rdb"
+	h "github.com/nirantarasi/wasq/internal/testutil"
 )
 
 func TestSyncer(t *testing.T) {
@@ -119,7 +119,7 @@ func TestSyncerDropsStaleRequests(t *testing.T) {
 		n  int // number of times request has been processed
 	)
 
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		syncRequestCh <- &syncRequest{
 			fn: func() error {
 				mu.Lock()

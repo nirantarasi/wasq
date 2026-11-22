@@ -2,16 +2,16 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"context"
 	"sync"
 	"time"
 
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/errors"
-	"github.com/hibiken/asynq/internal/log"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/errors"
+	"github.com/nirantarasi/wasq/internal/log"
 )
 
 type recoverer struct {
@@ -58,9 +58,7 @@ func (r *recoverer) shutdown() {
 }
 
 func (r *recoverer) start(wg *sync.WaitGroup) {
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		r.recover()
 		timer := time.NewTimer(r.interval)
 		for {
@@ -74,7 +72,7 @@ func (r *recoverer) start(wg *sync.WaitGroup) {
 				timer.Reset(r.interval)
 			}
 		}
-	}()
+	})
 }
 
 // ErrLeaseExpired error indicates that the task failed because the worker working on the task

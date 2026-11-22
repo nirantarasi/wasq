@@ -2,13 +2,13 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"sync"
 	"time"
 
-	"github.com/hibiken/asynq/internal/log"
+	"github.com/nirantarasi/wasq/internal/log"
 )
 
 // syncer is responsible for queuing up failed requests to redis and retry
@@ -53,9 +53,7 @@ func (s *syncer) shutdown() {
 }
 
 func (s *syncer) start(wg *sync.WaitGroup) {
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		var requests []*syncRequest
 		for {
 			select {
@@ -83,5 +81,5 @@ func (s *syncer) start(wg *sync.WaitGroup) {
 				requests = temp
 			}
 		}
-	}()
+	})
 }

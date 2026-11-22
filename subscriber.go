@@ -2,14 +2,14 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"sync"
 	"time"
 
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/log"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/log"
 )
 
 type subscriber struct {
@@ -49,9 +49,7 @@ func (s *subscriber) shutdown() {
 }
 
 func (s *subscriber) start(wg *sync.WaitGroup) {
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		var (
 			sub base.CancelSubscription
 			err error
@@ -85,5 +83,5 @@ func (s *subscriber) start(wg *sync.WaitGroup) {
 				}
 			}
 		}
-	}()
+	})
 }

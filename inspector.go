@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"encoding/json"
@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/errors"
-	"github.com/hibiken/asynq/internal/rdb"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/errors"
+	"github.com/nirantarasi/wasq/internal/rdb"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -252,7 +252,7 @@ func (i *Inspector) GetTaskInfo(queue, id string) (*TaskInfo, error) {
 }
 
 // ListOption specifies behavior of list operation.
-type ListOption interface{}
+type ListOption any
 
 // Internal list option representations.
 type (

@@ -2,14 +2,14 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-package asynq
+package wasq
 
 import (
 	"sync"
 	"time"
 
-	"github.com/hibiken/asynq/internal/base"
-	"github.com/hibiken/asynq/internal/log"
+	"github.com/nirantarasi/wasq/internal/base"
+	"github.com/nirantarasi/wasq/internal/log"
 )
 
 // healthchecker is responsible for pinging broker periodically
@@ -60,9 +60,7 @@ func (hc *healthchecker) start(wg *sync.WaitGroup) {
 		return
 	}
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		timer := time.NewTimer(hc.interval)
 		for {
 			select {
@@ -76,5 +74,5 @@ func (hc *healthchecker) start(wg *sync.WaitGroup) {
 				timer.Reset(hc.interval)
 			}
 		}
-	}()
+	})
 }

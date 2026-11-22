@@ -1,6 +1,6 @@
 //go:build linux || dragonfly || freebsd || netbsd || openbsd || darwin
 
-package asynq
+package wasq
 
 import (
 	"os"

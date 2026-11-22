@@ -1,0 +1,46 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Build all modules
+    cmds:
+      - task: build
+
+  build:
+    desc: Build root, tools, and x modules
+    cmds:
+      - go build ./...
+      - cmd: cd tools && go build ./...
+      - cmd: cd x && go build ./...
+
+  test:
+    desc: Run tests across modules
+    cmds:
+      - go test -race -v ./...
+      - cmd: cd tools && go test -race -v ./...
+      - cmd: cd x && go test -race -v ./...
+
+  lint:
+    desc: Run golangci-lint
+    cmds:
+      - golangci-lint run
+
+  proto:
+    desc: Generate protobuf code
+    sources:
+      - internal/proto/wasq.proto
+    generates:
+      - internal/proto/wasq.pb.go
+    cmds:
+      - >-
+        protoc -I=internal/proto
+        --go_out=internal/proto
+        --go_opt=module=github.com/nirantarasi/wasq/internal/proto
+        internal/proto/wasq.proto
+
+  tidy:
+    desc: Run go mod tidy across all modules
+    cmds:
+      - go mod tidy
+      - cmd: cd tools && go mod tidy
+      - cmd: cd x && go mod tidy

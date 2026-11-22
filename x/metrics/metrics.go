@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/hibiken/asynq"
+	"github.com/nirantarasi/wasq"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -17,17 +17,17 @@ const namespace = "asynq"
 //
 // All metrics exported from this collector have prefix "asynq".
 type QueueMetricsCollector struct {
-	inspector *asynq.Inspector
+	inspector *wasq.Inspector
 }
 
 // collectQueueInfo gathers QueueInfo of all queues.
 // Since this operation is expensive, it must be called once per collection.
-func (qmc *QueueMetricsCollector) collectQueueInfo() ([]*asynq.QueueInfo, error) {
+func (qmc *QueueMetricsCollector) collectQueueInfo() ([]*wasq.QueueInfo, error) {
 	qnames, err := qmc.inspector.Queues()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get queue names: %w", err)
 	}
-	infos := make([]*asynq.QueueInfo, len(qnames))
+	infos := make([]*wasq.QueueInfo, len(qnames))
 	for i, qname := range qnames {
 		qinfo, err := qmc.inspector.GetQueueInfo(qname)
 		if err != nil {
@@ -185,6 +185,6 @@ func (qmc *QueueMetricsCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 // NewQueueMetricsCollector returns a collector that exports metrics about Asynq queues.
-func NewQueueMetricsCollector(inspector *asynq.Inspector) *QueueMetricsCollector {
+func NewQueueMetricsCollector(inspector *wasq.Inspector) *QueueMetricsCollector {
 	return &QueueMetricsCollector{inspector: inspector}
 }
