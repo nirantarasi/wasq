@@ -35,7 +35,7 @@ jobs:
         run: task bench
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
 
   integration-test:
     name: Integration Tests (Testcontainers)
